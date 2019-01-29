@@ -74,13 +74,6 @@ if ( !file.exists("breweries_geo.RData")){
 }
 head(pos)
 
-## step 3: plot breweries of Germany
-brewery_map <- get_map(location=c(lon = mean(c(min(pos$lon), max(pos$lon))), lat = mean(c(min(pos$lat), max(pos$lat)))), zoom=6, maptype="terrain", source = "stamen")
-get_openstreetmap()
-p <- ggmap(brewery_map) + geom_point(data=pos, aes(x=lon, y=lat), col="red", size=.8)
-p
-
-
 # Alternative package based on OpenStreetMap data to geolocate observations
 devtools::install_github("hrbrmstr/nominatim")
 library(nominatim)
@@ -89,11 +82,9 @@ load("/Users/simonmunzert/rkeys.RDa")
 b1 <- osm_geocode("Germany", key = openstreetmap)
 b1[c("lat", "lon")]
 
-# add background raster graphic
-library(OpenStreetMap)
-library(rgdal)
-map <- openmap(upperLeft = c(55.5, 5), lowerRight = c(46, 16), type = "osm")
 
+## step 3: plot breweries of Germany
+map <- openmap(upperLeft = c(55.5, 5), lowerRight = c(46, 16), type = "osm")
 pos_mercator <- projectMercator(pos$lat, pos$lon) %>% as.data.frame
 autoplot(map) + geom_point(aes(x, y), data=pos_mercator, size = .5, color = "red")
 

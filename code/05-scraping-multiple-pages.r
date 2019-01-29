@@ -26,7 +26,7 @@ browseURL("http://www.jstatsoft.org/")
 
 # construct list of urls
 baseurl <- "http://www.jstatsoft.org/article/view/v"
-volurl <- paste0("0", seq(1,86,1))
+volurl <- paste0("0", seq(1,87,1))
 volurl[1:9] <- paste0("00", seq(1, 9, 1))
 issurl <- paste0("0", seq(1,9,1))
 urls_list <- paste0(baseurl, volurl)
@@ -51,7 +51,7 @@ length(list_files)
 # delete non-existing articles
 files_size <- sapply(list_files_path, file.size)
 table(files_size) %>% sort()
-delete_files <- list_files_path[files_size == 28346]
+delete_files <- list_files_path[files_size == 28241]
 sapply(delete_files, file.remove)
 list_files_path <-  list.files(folder, pattern = "0.*", full.names = TRUE) # update list of files
 
@@ -74,6 +74,7 @@ for (i in 1:length(list_files_path)) {
 # construct data frame
 dat <- data.frame(authors = authors, title = title, numViews = numViews, datePublish = datePublish, stringsAsFactors = FALSE)
 head(dat)
+dat <- filter(dat, !is.na(numViews))
 
 # plot download statistics
 dattop <- dat[order(dat$numViews, decreasing = TRUE),]

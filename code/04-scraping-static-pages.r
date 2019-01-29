@@ -14,20 +14,22 @@ source("packages.r")
 # provides very intuitive functions to import and process webpages
 
 # 1. specify URL
-url <- "https://en.wikipedia.org/wiki/List_of_tallest_buildings_in_Washington,_D.C."
+url <- "https://en.wikipedia.org/wiki/List_of_tallest_buildings_in_Germany"
 browseURL(url)
 
 # 2. download static HTML behind the URL and parse it
 url_parsed <- read_html(url)
 
 # 3. extract specific nodes with XPath
-nodes <- html_nodes(url_parsed, xpath = '//td[2]/a[1]')
+nodes <- html_nodes(url_parsed, xpath = '//td[2]/a')
 
 # 4. extract content from nodes
 article_links <- html_text(nodes)
+article_links[article_links != ""]
 
 head(article_links)
 length(article_links)
+
 
 
 ## extract data from tables --------------
@@ -67,12 +69,8 @@ browseURL(url)
 
 url_parsed <- read_html(url)
 
-xpath <- '//*[contains(concat( " ", @class, " " ), concat( " ", "text-align-inherit", " " ))] | //*[(@id = "f0HwxnQWxXu66r")]//*[contains(concat( " ", @class, " " ), concat( " ", "equalize-height-target", " " ))]'
+xpath <- '//*[(@id = "main-content")]//*[contains(concat( " ", @class, " " ), concat( " ", "text-align-inherit", " " ))]'
 headings_nodes <- html_nodes(url_parsed, xpath = xpath)
-
-
-
-headings_nodes <- html_nodes(url_parsed, xpath = '//*[(@id = "main-content")]//*[contains(concat( " ", @class, " " ), concat( " ", "text-align-inherit", " " ))]')
 
 headings <- html_text(headings_nodes)
 headings <- str_subset(headings, "^[:alnum:]")
