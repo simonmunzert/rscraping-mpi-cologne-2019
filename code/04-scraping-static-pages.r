@@ -21,7 +21,7 @@ browseURL(url)
 url_parsed <- read_html(url)
 
 # 3. extract specific nodes with XPath
-nodes <- html_nodes(url_parsed, xpath = '//td[2]/a')
+nodes <- html_nodes(url_parsed, xpath = '//td[2]')
 
 # 4. extract content from nodes
 article_links <- html_text(nodes)
@@ -65,9 +65,13 @@ browseURL("http://selectorgadget.com/")
 ## SelectorGadget is magic. Proof:
 
 url <- "https://www.washingtonpost.com"
+url <- "http://www.spiegel.de/schlagzeilen/"
 browseURL(url)
 
 url_parsed <- read_html(url)
+
+xpath <- '//*[contains(concat( " ", @class, " " ), concat( " ", "text-align-inherit", " " ))]'
+xpath <- '//*[contains(concat( " ", @class, " " ), concat( " ", "schlagzeilen-headline", " " ))]'
 
 xpath <- '//*[(@id = "main-content")]//*[contains(concat( " ", @class, " " ), concat( " ", "text-align-inherit", " " ))]'
 headings_nodes <- html_nodes(url_parsed, xpath = xpath)
@@ -76,6 +80,8 @@ headings <- html_text(headings_nodes)
 headings <- str_subset(headings, "^[:alnum:]")
 head(headings)
 length(headings)
+
+
 
 
 

@@ -9,7 +9,8 @@ source("packages.r")
 
 ## inspect the source code in your browser ---------------
 
-browseURL("http://www.biermap24.de/brauereiliste.php")
+browseURL("http://www.biermap24.de/brauereiliste.php") 
+
 
 # Chrome:
 # 1. right click on page
@@ -49,7 +50,7 @@ setwd(tempwd)
 
 ## step 1: fetch list of cities with breweries
 url <- "http://www.biermap24.de/brauereiliste.php"
-content <- read_html(url)
+content <- read_html(url, encoding = "utf8")
 anchors <- html_nodes(content, xpath = "//tr/td[2]")
 cities <- html_text(anchors)
 cities
@@ -79,11 +80,12 @@ devtools::install_github("hrbrmstr/nominatim")
 library(nominatim)
 # get fre API key at browseURL("https://developer.mapquest.com/")
 load("/Users/simonmunzert/rkeys.RDa")
-b1 <- osm_geocode("Germany", key = openstreetmap)
+b1 <- osm_geocode("Cologne", key = openstreetmap)
 b1[c("lat", "lon")]
 
 
 ## step 3: plot breweries of Germany
+library(OpenStreetMap)
 map <- openmap(upperLeft = c(55.5, 5), lowerRight = c(46, 16), type = "osm")
 pos_mercator <- projectMercator(pos$lat, pos$lon) %>% as.data.frame
 autoplot(map) + geom_point(aes(x, y), data=pos_mercator, size = .5, color = "red")

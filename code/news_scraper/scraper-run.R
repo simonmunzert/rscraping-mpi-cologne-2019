@@ -1,5 +1,5 @@
 #!/usr/local/bin/Rscript
-setwd("/Users/s.munzert/Munzert Dropbox/Simon Munzert/vw-news-scraping/code")
+setwd("/Users/simonmunzert/Munzert Dropbox/Simon Munzert/vw-news-scraping/code")
 
 library(readr)
 library(magrittr)

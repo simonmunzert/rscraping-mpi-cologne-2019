@@ -27,6 +27,7 @@ example.obj <- "1. A small sentence. - 2. Another tiny sentence."
 # self match
 str_extract(example.obj, "small")
 str_extract(example.obj, "banana")
+str_extract(example.obj, "e")
 str_extract_all(example.obj, "e")
 
 # multiple matches
@@ -85,7 +86,7 @@ str_extract(example.obj, "A.+sentence")
 
 # greedy quantification
 str_extract(example.obj, "A.+sentence")
-str_extract(example.obj, "A.+?sentence")
+str_extract_all(example.obj, "A.+?sentence")
 
 # quantifier with pattern sequence
 unlist(str_extract_all(example.obj, "(.en){1,5}"))
@@ -96,12 +97,18 @@ unlist(str_extract_all(example.obj, "\\."))
 unlist(str_extract_all(example.obj, fixed(".")))
 
 # meta characters in character classes
-unlist(str_extract_all(example.obj, "[1-2]"))
-unlist(str_extract_all(example.obj, "[12-]"))
+unlist(str_extract_all(example.obj, "[1-3]"))
+unlist(str_extract_all(example.obj, "[13-]"))
 
 # backreferencing
 str_extract(example.obj, "([:alpha:]).+?\\1")
 str_extract(example.obj, "(\\b[a-z]+\\b).+?\\1")
+
+# assertions
+unlist(str_extract_all(example.obj, "(?<=2. ).+")) # positive lookbehind: (?<=...)
+unlist(str_extract_all(example.obj, ".+(?=2)")) # positive lookahead (?=...)
+unlist(str_extract_all(example.obj, "(?<!Blah )tiny.+")) # negative lookbehind: (?<!...)
+unlist(str_extract_all(example.obj, "sentence.+(?!Bla)")) # negative lookahead (?!...)
 
 # do you think you can master regular expressions now?
 browseURL("http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address/201378#201378") # think again
@@ -167,14 +174,15 @@ stri_rand_strings(100, 10, pattern = "[washington]")
 
 ## 1. describe the types of strings that conform to the following regular expressions and construct an example that is matched by the regular expression.
 str_extract_all("Phone 150$, PC 690$", "[0-9]+\\$") # example
-"\\b[a-z]{1,4}\\b"
-".*?\\.txt$"
-"\\d{2}/\\d{2}/\\d{2,4}"
-"<(.+?)>.+?</\\1>"
+str_extract_all("The smallest cities are the best", "\\b[a-z]{1,4}\\b")
+str_extract_all(c("course.txt", "log.txt", "log..txt"), ".*?\\.txt$")
+str_extract_all("12/01/2019 to 12/01/19", "\\d{2}/\\d{2}/\\d{2,4}")
+str_extract_all("<li>hello</li>","<(.+?)>.+?</\\1>")
 
 ## 2. consider the mail address  chunkylover53[at]aol[dot]com.
 # a) transform the string to a standard mail format using regular expressions.
 # b) imagine we are trying to extract the digits in the mail address using [:digit:]. explain why this fails and correct the expression.
 email <- "chunkylover53[at]aol[dot]com"
+
 
 
